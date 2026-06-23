@@ -1,0 +1,8 @@
+{
+  "name": "couple-site",
+  "version": "1.0.0",
+  "description": "💕 我们的专属世界 - 共享版",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "dependencies": { "express": "^4.18.2" }
+}
