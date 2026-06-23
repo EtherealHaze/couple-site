@@ -331,12 +331,23 @@
 
     // ===== 共享数据 API（代替 localStorage）=====
     var appData = {};
-    try {
+    var dataLoaded = false;
+
+    function loadData(callback) {
       var xhr = new XMLHttpRequest();
-      xhr.open('GET', '/api/load', false);
+      xhr.open('GET', '/api/load', true);
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          appData = JSON.parse(xhr.responseText);
+          dataLoaded = true;
+        }
+        if (callback) callback();
+      };
+      xhr.onerror = function() {
+        if (callback) callback();
+      };
       xhr.send();
-      if (xhr.status === 200) appData = JSON.parse(xhr.responseText);
-    } catch(e) {}
+    }
 
     function apiSavePartial(partialData) {
       var xhr = new XMLHttpRequest();
