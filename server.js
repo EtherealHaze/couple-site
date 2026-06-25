@@ -6,7 +6,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const DATA_FILE = path.join(__dirname, 'data.json');
 
-app.use(express.json({ limit: '50mb' }));
+app.use(express.json({ limit: '100mb' }));
 app.use(express.static(__dirname));
 
 function initData() {
@@ -80,6 +80,25 @@ app.post('/api/save', (req, res) => {
     }
   }
   saveData();
+  res.json({ ok: true });
+});
+
+// File upload endpoint
+var multer = require('multer');
+var upload = multer({ dest: path.join(__dirname, 'uploads/') });
+app.use('/uploads', express.static(path.join(__dirname, 'uploads/')));
+
+app.post('/api/upload', upload.single('photo'), function(req, res) {
+  if (!req.file) return res.status(400).json({ error: 'no file' });
+  var ext = path.extname(req.file.originalname) || '.jpg';
+  var newPath = req.file.path + ext;
+  fs.renameSync(req.file.path, newPath);
+  res.json({ url: '/uploads/' + req.file.filename + ext });
+});
+
+app.delete('/api/upload/:filename', function(req, res) {
+  var filePath = path.join(__dirname, 'uploads', req.params.filename);
+  try { fs.unlinkSync(filePath); } catch(e) {}
   res.json({ ok: true });
 });
 
