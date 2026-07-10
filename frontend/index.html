@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>💕 我们的专属世界</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="verify-overlay" id="verifyOverlay">
+    <div class="verify-box">
+      <div class="big-icon">💕</div>
+      <h2>欢迎来到我们的世界</h2>
+      <p class="hint" id="verifyHint">验证一下，是你吗？</p>
+      <div class="verify-step active" id="step1">
+        <div class="step-label">✦ 第一步：你是谁？</div>
+        <div class="who-btns">
+          <button class="who-btn" id="btnHe"><span class="emoji">💙</span>他</button>
+          <button class="who-btn" id="btnShe"><span class="emoji">💗</span>她</button>
+        </div>
+      </div>
+      <div class="verify-step" id="step2">
+        <div class="step-label" id="secretLabel">✦ 第二步：输入我们的暗号吧</div>
+        <input class="verify-input" id="secretInput" type="text" maxlength="20" placeholder="输入秘密暗号..." autocomplete="off" />
+        <button class="btn btn-primary" id="btnEnter">💕 让我进去</button>
+        <div class="verify-error" id="verifyError"></div>
+        <button class="btn-back" id="btnBack">← 选错了？重选</button>
+      </div>
+      <div class="verify-success" id="verifySuccess">
+        <span class="big">💖</span>欢迎回来，亲爱的 ✨
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Navigation ===== -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <div class="nav-brand">💕 我们的世界</div>
+      <button class="settings-btn" id="settingsBtn" title="设置">⚙️</button>
+    </div>
+  </nav>
+
+  <div id="mainContent">
+    <section class="hero">
+      <div>
+        <div class="heart-icon">💕</div>
+        <div class="names">
+          <span class="his" id="nameHis">他的名字</span>
+          <span class="amp">&amp;</span>
+          <span class="her" id="nameHer">她的名字</span>
+        </div>
+        <div class="together" id="daysCounter">0</div>
+        <div class="together-label">天 · 在一起的日子 💖</div>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+          <div class="counter-block"><div class="num" id="cDays">0</div><div class="label">天</div></div>
+          <div class="counter-block"><div class="num" id="cHours">00</div><div class="label">小时</div></div>
+          <div class="counter-block"><div class="num" id="cMins">00</div><div class="label">分钟</div></div>
+          <div class="counter-block"><div class="num" id="cSecs">00</div><div class="label">秒</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Story Timeline ===== -->
+    <div class="section" id="story">
+      <h2 class="section-title">💞 我们的故事</h2>
+      <p class="section-desc">从相识到相爱的每个瞬间 · 点击查看详情 💕</p>
+      <div class="timeline" id="storyTimeline">
+        <!-- 由 renderStoryTimeline() 动态生成 -->
+      </div>
+    </div>
+
+    <!-- ===== Photo Gallery ===== -->
+    <div class="section" id="gallery">
+      <h2 class="section-title">📸 我们的相册</h2>
+      <p class="section-desc">每一张照片都是我们的回忆 🥰</p>
+      <div class="gallery-grid" id="galleryGrid">
+        <div class="gallery-item" onclick="galleryClick(0)"><div class="placeholder-text">📷<small>点击上传</small></div></div>
+        <div class="gallery-item" onclick="galleryClick(1)"><div class="placeholder-text">📷<small>点击上传</small></div></div>
+        <div class="gallery-item" onclick="galleryClick(2)"><div class="placeholder-text">📷<small>点击上传</small></div></div>
+        <div class="gallery-item" onclick="galleryClick(3)"><div class="placeholder-text">📷<small>点击上传</small></div></div>
+        <div class="gallery-item" onclick="galleryClick(4)"><div class="placeholder-text">📷<small>点击上传</small></div></div>
+        <div class="gallery-item" onclick="galleryClick(5)"><div class="placeholder-text">📷<small>点击上传</small></div></div>
+      </div>
+    </div>
+
+    <!-- ===== Messages ===== -->
+    <div class="section" id="messages">
+      <h2 class="section-title">💌 我们的留言板</h2>
+      <p class="section-desc">写下想对对方的话 🤗</p>
+      <div class="messages-grid" id="messagesGrid"></div>
+      <div class="message-form">
+        <h4>💬 写一条新留言</h4>
+        <select id="msgAuthor"><option value="他">💙 他</option><option value="她">💗 她</option></select>
+        <input type="text" id="msgTitle" placeholder="标题（选填）" />
+        <textarea id="msgContent" placeholder="写下你想说的话..."></textarea>
+        <button class="btn" onclick="addMessage()" style="width:100%;justify-content:center;">💌 发布留言</button>
+      </div>
+    </div>
+
+    <!-- ===== Bucket List ===== -->
+    <div class="section" id="bucket">
+      <h2 class="section-title">🎯 我们的愿望清单</h2>
+      <p class="section-desc">一起完成的每一件事都值得纪念 ✨</p>
+      <div class="add-bucket">
+        <input type="text" id="bucketInput" placeholder="写一个想一起做的事..." />
+        <select id="bucketEmoji"><option value="🌍">🌍旅行</option><option value="🍜">🍜美食</option><option value="🎬">🎬电影</option><option value="🎮">🎮玩乐</option><option value="🏠">🏠生活</option><option value="💑">💑浪漫</option><option value="🎉">🎉其他</option></select>
+        <button class="btn" onclick="addBucketItem()" style="padding:10px 18px;font-size:0.9rem;">➕添加</button>
+      </div>
+      <div class="bucket-grid" id="bucketGrid"></div>
+    </div>
+
+    <!-- ===== Favorites ===== -->
+    <div class="section" id="favorites">
+      <h2 class="section-title">🎵 我们的专属清单</h2>
+      <p class="section-desc">属于我们的歌、电影、美食...一切美好的东西 💖</p>
+      <div class="fav-grid">
+        <div class="fav-card"><h4>🎵 我们的歌</h4><ul class="fav-list" id="favSongs"></ul></div>
+        <div class="fav-card"><h4>🎬 一起看过的电影</h4><ul class="fav-list" id="favMovies"></ul></div>
+        <div class="fav-card"><h4>🍜 最爱美食</h4><ul class="fav-list" id="favFood"></ul></div>
+        <div class="fav-card"><h4>📍 想去的地方</h4><ul class="fav-list" id="favPlaces"></ul></div>
+      </div>
+    </div>
+
+    <footer style="text-align:center;padding:40px;border-top:1px solid #f3d9df;color:#7c5c64;"><p>💖 我们的专属世界</p></footer>
+  </div>
+
+  <!-- ===== Settings Modal ===== -->
+  <div class="settings-overlay" id="settingsOverlay">
+    <div class="settings-box">
+      <h3>⚙️ 网站设置</h3>
+      <div class="sub">改名字、换暗号、编辑故事和清单 ✨</div>
+
+      <!-- Basic settings -->
+      <div style="background:#fdf2f4;border-radius:12px;padding:12px 14px;margin-bottom:12px;cursor:pointer;" onclick="var n=this.nextElementSibling;n.style.display=n.style.display=='none'?'block':'none'">
+        <b>🔐 基础设置</b> <span style="float:right;color:#7c5c64;">▼</span>
+      </div>
+      <div style="margin-bottom:12px;">
+        <div class="field"><label>💙 他的名字</label><input type="text" id="setHisName" /></div>
+        <div class="field"><label>💗 她的名字</label><input type="text" id="setHerName" /></div>
+        <div class="field"><label>🔐 秘密暗号</label><input type="text" id="setSecret" maxlength="20" /><div class="hint">验证时输入这个才能进</div></div>
+        <div class="field"><label>💡 暗号提示</label><input type="text" id="setHint" /><div class="hint">验证页面上显示的提示文字</div></div>
+        <div class="field"><label>📅 纪念日</label><input type="date" id="setAnniversary" /><div class="hint">首页倒计时用的日期</div></div>
+      </div>
+
+      <!-- Story events -->
+      <div style="background:#fdf2f4;border-radius:12px;padding:12px 14px;margin-bottom:12px;cursor:pointer;" onclick="var n=this.nextElementSibling;n.style.display=n.style.display=='none'?'block':'none'">
+        <b>💞 故事事件</b> <span style="float:right;color:#7c5c64;">▼</span>
+      </div>
+      <div id="storySettings" style="display:none;margin-bottom:12px;"></div>
+
+      <!-- Favorites -->
+      <div style="background:#fdf2f4;border-radius:12px;padding:12px 14px;margin-bottom:12px;cursor:pointer;" onclick="var n=this.nextElementSibling;n.style.display=n.style.display=='none'?'block':'none'">
+        <b>🎵 专属清单</b> <span style="float:right;color:#7c5c64;">▼</span>
+      </div>
+      <div id="favSettings" style="display:none;margin-bottom:12px;"></div>
+
+      <div class="settings-actions">
+        <button class="btn btn-secondary" id="settingsCancel">取消</button>
+        <button class="btn" id="settingsSave">💾 保存</button>
+      </div>
+    </div>
+  </div>
+
+  
+<script src="js/app.js"></script>
+</body>
+</html>
